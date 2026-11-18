@@ -1,4 +1,5 @@
 package org.example;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionCSVReader {
-    public static List<Transaction> readTransactions(String filePath) {
+    public List<Transaction> readTransactions(String filePath) {
         List<Transaction> transactions = new ArrayList<>();
         try {
             URL url = new URL(filePath);
+            // Відкриття потоку для читання з URL
             try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
                 String line;
                 while ((line = br.readLine()) != null) {

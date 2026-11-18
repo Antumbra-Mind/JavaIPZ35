@@ -1,17 +1,22 @@
 package org.example;
+
+import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-public abstract class TransactionAnalyzer {
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+public class TransactionAnalyzer {
+    private final List<Transaction> transactions;
+    private DateTimeFormatter dateFormatter;
 
-    public static double calculateTotalBalance(List<Transaction> transactions) {
+    public TransactionAnalyzer(List<Transaction> transactions) {
+        this.transactions = transactions;
+        this.dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    }
+
+    // Метод для розрахунку загального балансу
+    public double calculateTotalBalance() {
         double balance = 0;
         for (Transaction transaction : transactions) {
             balance += transaction.getAmount();
@@ -19,7 +24,8 @@ public abstract class TransactionAnalyzer {
         return balance;
     }
 
-    public static int countTransactionsByMonth(List<Transaction> transactions, String monthYear) {
+    // Метод для підрахунку транзакцій за конкретний місяць і рік
+    public int countTransactionsByMonth(String monthYear) {
         int count = 0;
         for (Transaction transaction : transactions) {
             LocalDate date = LocalDate.parse(transaction.getDate(), dateFormatter);
@@ -31,63 +37,11 @@ public abstract class TransactionAnalyzer {
         return count;
     }
 
-    public static List<Transaction> findTopExpenses(List<Transaction> transactions) {
+    public List<Transaction> findTopExpenses() {
         return transactions.stream()
-                .filter(t -> t.getAmount() < 0)
-                .sorted(Comparator.comparing(Transaction::getAmount))
-                .limit(10)
-                .collect(Collectors.toList());
-    }
-
-    // самостійна робота
-    public static Transaction findLargestExpense(List<Transaction> transactions, LocalDate from, LocalDate to) {
-        Transaction result = null;
-        for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate(), dateFormatter);
-            if (t.getAmount() < 0 && !date.isBefore(from) && !date.isAfter(to)) {
-                if (result == null || t.getAmount() < result.getAmount()) {
-                    result = t;
-                }
-            }
-        }
-        return result;
-    }
-
-    // самостійна робота
-    public static Transaction findSmallestExpense(List<Transaction> transactions, LocalDate from, LocalDate to) {
-        Transaction result = null;
-        for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate(), dateFormatter);
-            if (t.getAmount() < 0 && !date.isBefore(from) && !date.isAfter(to)) {
-                if (result == null || t.getAmount() > result.getAmount()) {
-                    result = t;
-                }
-            }
-        }
-        return result;
-    }
-
-    // самостійна робота
-    public static Map<String, Double> sumExpensesByCategory(List<Transaction> transactions) {
-        Map<String, Double> result = new HashMap<>();
-        for (Transaction t : transactions) {
-            if (t.getAmount() < 0) {
-                result.merge(t.getDescription(), -t.getAmount(), Double::sum);
-            }
-        }
-        return result;
-    }
-
-    // самостійна робота
-    public static Map<String, Double> sumExpensesByMonth(List<Transaction> transactions) {
-        Map<String, Double> result = new TreeMap<>();
-        for (Transaction t : transactions) {
-            if (t.getAmount() < 0) {
-                LocalDate date = LocalDate.parse(t.getDate(), dateFormatter);
-                String key = date.format(DateTimeFormatter.ofPattern("yyyy-MM"));
-                result.merge(key, -t.getAmount(), Double::sum);
-            }
-        }
-        return result;
+                .filter(t -> t.getAmount() < 0) // Вибірка лише витрат (від'ємні значення)
+                .sorted(Comparator.comparing(Transaction::getAmount)) // Сортування за сумою
+                .limit(10) // Обмеження результату першими 10 записами
+                .collect(Collectors.toList()); // Збір результату в список
     }
 }
