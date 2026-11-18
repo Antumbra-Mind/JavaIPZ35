@@ -1,7 +1,12 @@
 package org.example;
 
+import lombok.Getter;
+import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
+
+@Getter
+@Setter
 
 public class Order {
     private List<Product> products; // Список товарів у замовленні
@@ -15,23 +20,9 @@ public class Order {
         this.status = "Нове"; // Стандартний статус при створенні замовлення
     }
 
-    // Метод для зміни статусу замовлення
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    // Метод для зміни статусу замовлення(Видалено в угоду ЛомБоку)
 
-    // Геттери
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public String getStatus() {
-        return status;
-    }
+    // Геттери(Видалено в угоду ЛомБоку)
 
     // Метод для виведення інформації про замовлення
     @Override

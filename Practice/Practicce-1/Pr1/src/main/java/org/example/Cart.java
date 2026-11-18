@@ -1,10 +1,19 @@
 package org.example;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@NoArgsConstructor
+
 public class Cart {
-    private List<Product> products; // Список товарів у кошику
+    private List<Product> products = new ArrayList<>();
+
+    // Список товарів у кошику
     public List<Product> getProducts() {
         return new ArrayList<>(products);
     }
@@ -13,10 +22,7 @@ public class Cart {
     public void clear() {
         products.clear();
     }
-    // Конструктор класу
-    public Cart() {
-        this.products = new ArrayList<>();
-    }
+    // Конструктор класу(Видаленно в угоду Ломбук)
 
     // Метод для додавання товару до кошика
     public void addProduct(Product product) {
