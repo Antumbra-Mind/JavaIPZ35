@@ -1,8 +1,8 @@
 import org.example.Transaction;
 import org.example.TransactionAnalyzer;
+import org.example.TransactionCSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,10 +17,9 @@ class TransactionAnalyzerTest {
         List<Transaction> transactions = Arrays.asList(transaction1, transaction2, transaction3);
 
         // Створення екземпляру TransactionAnalyzer з тестовими даними
-        TransactionAnalyzer analyzer = new TransactionAnalyzer(transactions);
 
         // Виклик методу, який потрібно протестувати
-        double result = analyzer.calculateTotalBalance();
+        double result = TransactionAnalyzer.calculateTotalBalance(transactions);
 
         // Перевірка результату
         Assertions.assertEquals(200.0, result, "Розрахунок загального балансу неправильний");
@@ -35,13 +34,26 @@ class TransactionAnalyzerTest {
         List<Transaction> transactions = Arrays.asList(transaction1, transaction2, transaction3);
 
         // Створення екземпляру TransactionAnalyzer з тестовими даними
-        TransactionAnalyzer analyzer = new TransactionAnalyzer(transactions);
 
-        int countFeb = analyzer.countTransactionsByMonth("02-2023");
-        int countMar = analyzer.countTransactionsByMonth("03-2023");
+        int countFeb = TransactionAnalyzer.countTransactionsByMonth(transactions,"02-2023");
+        int countMar = TransactionAnalyzer.countTransactionsByMonth(transactions,"03-2023");
 
         // Перевірка результатів
         Assertions.assertEquals(2, countFeb, "Кількість транзакцій за лютий неправильна");
         Assertions.assertEquals(1, countMar, "Кількість транзакцій за березень неправильна");
     }
+
+    @Test
+    public void testFindTopExpenses(){
+        String filePath = "https://informer.com.ua/dut/java/pr2.csv";
+        List<Transaction> transactions = TransactionCSVReader.readTransactions(filePath);
+        List<Transaction> topExpenses = TransactionAnalyzer.findTopExpenses(transactions);
+        Assertions.assertEquals(10, topExpenses.size());
+        Assertions.assertEquals(-9100, topExpenses.get(0).getAmount());
+        Assertions.assertEquals(-3200, topExpenses.get(9).getAmount());
+        for (Transaction transaction : topExpenses) {
+            Assertions.assertTrue(transaction.getAmount() < 0);
+        }
+    }
+
 }
