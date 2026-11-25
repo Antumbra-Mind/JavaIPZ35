@@ -12,7 +12,6 @@ public abstract class TransactionCSVReader {
         List<Transaction> transactions = new ArrayList<>();
         try {
             URL url = new URL(filePath);
-            // Відкриття потоку для читання з URL
             try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
                 String line;
                 while ((line = br.readLine()) != null) {
