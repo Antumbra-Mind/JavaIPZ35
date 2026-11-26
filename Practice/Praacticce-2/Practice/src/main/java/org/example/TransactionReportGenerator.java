@@ -19,7 +19,6 @@ public abstract class TransactionReportGenerator {
             System.out.println(expense.getDescription() + ": " + expense.getAmount());
         }
     }
-    // Звіт про найбільшу і найменшу витрату за період
     public static void printMinMaxExpenseReport(String startDate, String endDate, Transaction max, Transaction min) {
         System.out.println("Витрати за період " + startDate + " - " + endDate + ":");
         if (max == null || min == null) {

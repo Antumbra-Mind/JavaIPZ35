@@ -11,7 +11,6 @@ import java.util.TreeMap;
 public abstract class TransactionAnalyzer {
 
 
-    // Метод для розрахунку загального балансу
     public static double calculateTotalBalance(List<Transaction> transactions) {
         double balance = 0;
         for (Transaction transaction : transactions) {
@@ -20,7 +19,6 @@ public abstract class TransactionAnalyzer {
         return balance;
     }
 
-    // Метод для підрахунку транзакцій за конкретний місяць і рік
     public static int countTransactionsByMonth(List<Transaction> transactions, String monthYear) {
         int count = 0;
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -64,7 +62,6 @@ public abstract class TransactionAnalyzer {
         return max;
     }
 
-    // Найменша витрата за період
     public static Transaction findMinExpenseInPeriod(List<Transaction> transactions, String startDate, String endDate) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate start = LocalDate.parse(startDate, dateFormatter);

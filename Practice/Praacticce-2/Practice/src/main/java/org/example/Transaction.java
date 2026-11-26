@@ -12,7 +12,6 @@ public class Transaction {
     private String description;
 
 
-    // toString метод для зручності виводу
     @Override
     public String toString() {
         return "Transaction{" +

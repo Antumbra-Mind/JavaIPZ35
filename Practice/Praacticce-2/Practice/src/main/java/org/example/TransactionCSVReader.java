@@ -7,22 +7,27 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TransactionCSVReader {
-    public static List<Transaction> readTransactions(String filePath) {
-        List<Transaction> transactions = new ArrayList<>();
-        try {
-            URL url = new URL(filePath);
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] values = line.split(",");
-                    Transaction transaction = new Transaction(values[0], Double.parseDouble(values[1]), values[2]);
-                    transactions.add(transaction);
+
+    public abstract class TransactionCSVReader {
+
+        public static List<String> readLines(String source) {
+            List<String> lines = new ArrayList<>();
+            try {
+                URL url = new URL(source);
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(url.openStream(), "UTF-8"))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        lines.add(line);
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return lines;
         }
-        return transactions;
+
+        public static List<Transaction> readTransactions(String filePath) {
+            return TransactionCSVParser.parse(readLines(filePath));
+        }
     }
-}
